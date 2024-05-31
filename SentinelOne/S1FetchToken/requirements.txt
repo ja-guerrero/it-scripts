@@ -1,0 +1,5 @@
+boto3==1.26.110
+botocore==1.29.110
+google_api_python_client==2.106.0
+protobuf==4.25.0
+Requests==2.31.0

@@ -1,0 +1,50 @@
+service: s1enrollmenttokens
+
+provider:
+  name: aws
+  runtime: python3.11
+  stage: dev
+  region: us-east-1
+  memorySize: 1024
+  timeout: 10 # seconds
+  apiGateway:
+    apiKeys:
+      - xx
+  environment:
+    BASE_S1_API_URL: ${env:BASE_S1_API_URL}
+    S1_SITE_ID: ${env:S1_SITE_ID}
+    S1_API_TOKEN: ${env:S1_API_TOKEN}
+    S1_DEFAULT_GROUP_TOKEN: ${env:S1_DEFAULT_GROUP_TOKEN}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - secretsmanager:GetResourcePolicy
+            - secretsmanager:GetSecretValue
+            - secretsmanager:DescribeSecret
+            - secretsmanager:ListSecretVersionIds
+          Resource:
+            - "arn:aws:secretsmanager:us-east-1:010809757458:secret:xx"
+
+functions:
+  s1tokens:
+    handler: s1tokens.lambda_handler
+    events:
+      - http:
+          path: /token
+          method: GET
+          cors: true
+          private: true
+          request:
+            parameters:
+              querystrings:
+                email: true
+
+useDotenv: true
+
+plugins:
+  - serverless-python-requirements
+
+package:
+  individually: true
