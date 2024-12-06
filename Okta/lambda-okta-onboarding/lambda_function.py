@@ -16,6 +16,7 @@ logger = logging.getLogger()
 #Retrieve API Oktne and Domain from AWS Lambda Environment Variables
 OKTA_API_BASE_URL = os.environ["OKTA_URL"]
 OKTA_API_TOKEN = os.environ["OKTA_TOKEN"]
+DOMAIN = os.environ["DOMAIN"]
 
 #Replace &amp with & for Formatting errors
 def replace_ampersand(text):
@@ -35,7 +36,7 @@ def declare_email(name):
     names = name.split(" ")
     names =  [x for x in names if x]
     print(names)
-    email = names[0][0] + names[-1] + "@Domain" #Update with Org's Domain
+    email = names[0][0] + names[-1] + DOMAIN #Update with Org's Domain
     return email.lower()
 
 #Find if Email Already exists and if not find an available email by adding a number to the email
